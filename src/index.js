@@ -20,6 +20,11 @@ let count = 0;
 io.on('connection',(socket)=>{ //connection is the event.
     console.log('New WebSocket connection');
     socket.emit('countUpdated', count);
+
+    socket.on('increment',()=>{
+        count++;
+        socket.emit('countUpdated',count);
+    })
 });
 
 server.listen(PORT,()=>{
