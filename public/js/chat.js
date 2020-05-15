@@ -1,9 +1,11 @@
 const socket = io();
 
-socket.on('countUpdated',(data)=>{
-    document.querySelector('h1').innerText = data;
+socket.on('message',(data)=>{
+    console.log(data);
 });
 
-document.querySelector('#increment').addEventListener('click', (event)=>{
-    socket.emit('increment');
-})
+document.querySelector('#submit').addEventListener('click',(e)=>{
+    e.preventDefault();
+    const input = document.querySelector('.textarea').value;
+    socket.emit('sendMessage', input);
+});
