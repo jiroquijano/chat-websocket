@@ -23,7 +23,7 @@ io.on('connection',(socket)=>{ //connection is the event.
 
     socket.on('increment',()=>{
         count++;
-        socket.emit('countUpdated',count);
+        io.emit('countUpdated',count);
     })
 });
 
