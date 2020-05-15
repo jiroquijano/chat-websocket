@@ -15,6 +15,13 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static(publicDirectory));
 
+let count = 0;
+
+io.on('connection',(socket)=>{ //connection is the event.
+    console.log('New WebSocket connection');
+    socket.emit('countUpdated', count);
+});
+
 server.listen(PORT,()=>{
     console.log(`listening on port ${PORT}`);
 })
