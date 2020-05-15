@@ -4,8 +4,8 @@ socket.on('message',(data)=>{
     console.log(data);
 });
 
-document.querySelector('#submit').addEventListener('click',(e)=>{
+document.querySelector('#message-form').addEventListener('submit',(e)=>{
     e.preventDefault();
-    const input = document.querySelector('.textarea').value;
+    const input = e.target.elements.message.value;
     socket.emit('sendMessage', input);
 });
