@@ -18,9 +18,15 @@ app.use(express.static(publicDirectory));
 io.on('connection',(socket)=>{ //connection is the event.
     console.log('New WebSocket connection');
     socket.emit('message','Welcome!');
+
     socket.broadcast.emit('message', 'A new user has joined!'); //broadcast.emit emits the message to all clients except for the current socket
+    
     socket.on('sendMessage',(data)=>{
         io.emit('message',data);
+    });
+
+    socket.on('disconnect',()=>{ //disconnect is called within the .on connection
+        io.emit('message', 'A user left the convo');
     });
 });
 
