@@ -11,7 +11,9 @@ socket.on('sendLocation', (data)=>{
 document.querySelector('#message-form').addEventListener('submit',(e)=>{
     e.preventDefault();
     const input = e.target.elements.message.value;
-    socket.emit('sendMessage', input);
+    socket.emit('sendMessage', input, (message)=>{
+        console.log(message);
+    });
 });
 
 document.querySelector('#send-location').addEventListener('click',(e)=>{

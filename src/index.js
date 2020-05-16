@@ -21,8 +21,9 @@ io.on('connection',(socket)=>{ //connection is the event.
 
     socket.broadcast.emit('message', 'A new user has joined!'); //broadcast.emit emits the message to all clients except for the current socket
     
-    socket.on('sendMessage',(data)=>{
+    socket.on('sendMessage',(data, callback) =>{
         io.emit('message',data);
+        callback('Delivered!');
     });
 
     socket.on('sendLocation', (data)=>{
