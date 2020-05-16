@@ -32,7 +32,7 @@ DOMElements.messageForm.addEventListener('submit',(e)=>{
     });
 });
 
-document.querySelector('#send-location').addEventListener('click',(e)=>{
+DOMElements.sendLocationButton.addEventListener('click',(e)=>{
     DOMElements.sendLocationButton.disabled = true;
     if(!navigator.geolocation) return alert('Geolocation not supported by browser');
     navigator.geolocation.getCurrentPosition((position)=>{
