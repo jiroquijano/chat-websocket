@@ -11,6 +11,7 @@ const DOMElements = {
 
 //Templates
 const messageTemplate = document.querySelector('#message-template').innerHTML;
+const locationTemplate = document.querySelector('#location-template').innerHTML;
 
 socket.on('message',(data)=>{
     console.log(data);
@@ -20,10 +21,13 @@ socket.on('message',(data)=>{
     messages.insertAdjacentHTML('beforeend', html);
 });
 
-socket.on('sendLocation', (data)=>{
+socket.on('locationMessage', (data)=>{
     console.log(data);
-
-})
+    const html = Mustache.render(locationTemplate,{
+        location: data
+    });
+    messages.insertAdjacentHTML('beforeend',html);
+});
 
 DOMElements.messageForm.addEventListener('submit',(e)=>{
     e.preventDefault();

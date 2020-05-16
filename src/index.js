@@ -32,7 +32,7 @@ io.on('connection',(socket)=>{ //connection is the event.
     });
 
     socket.on('sendLocation', (data,callback)=>{
-        io.emit('sendLocation',`https://www.google.com/maps?q=${data.latitude},${data.longitude}`);
+        io.emit('locationMessage',`https://www.google.com/maps?q=${data.latitude},${data.longitude}`);
         callback();
     });
 
