@@ -31,8 +31,9 @@ io.on('connection',(socket)=>{ //connection is the event.
         callback();
     });
 
-    socket.on('sendLocation', (data)=>{
+    socket.on('sendLocation', (data,callback)=>{
         io.emit('sendLocation',`https://www.google.com/maps?q=${data.latitude},${data.longitude}`);
+        callback();
     });
 
     socket.on('disconnect',()=>{ //disconnect is called within the .on connection
