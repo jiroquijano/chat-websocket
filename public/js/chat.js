@@ -18,7 +18,7 @@ socket.on('message',(data)=>{
     const html = Mustache.render(messageTemplate,{
         message: data
     });
-    messages.insertAdjacentHTML('beforeend', html);
+    DOMElements.messages.insertAdjacentHTML('beforeend', html);
 });
 
 socket.on('locationMessage', (data)=>{
@@ -26,7 +26,7 @@ socket.on('locationMessage', (data)=>{
     const html = Mustache.render(locationTemplate,{
         location: data
     });
-    messages.insertAdjacentHTML('beforeend',html);
+    DOMElements.messages.insertAdjacentHTML('beforeend',html);
 });
 
 DOMElements.messageForm.addEventListener('submit',(e)=>{
