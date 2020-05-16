@@ -13,21 +13,22 @@ const io = socketio(server);
 
 const publicDirectory = path.join(__dirname,'../public');
 const PORT = process.env.PORT || 3000;
+const {generateMessage} = require('./utils/messages');
 
 app.use(express.static(publicDirectory));
 
 io.on('connection',(socket)=>{ //connection is the event.
     console.log('New WebSocket connection');
-    socket.emit('message','Welcome!');
+    socket.emit('message',generateMessage('Welcome'));
 
-    socket.broadcast.emit('message', 'A new user has joined!'); //broadcast.emit emits the message to all clients except for the current socket
-    
+    //broadcast.emit emits the message to all clients except for the current socket    
+    socket.broadcast.emit('message', generateMessage('A new user has joined!')); 
     socket.on('sendMessage',(data, callback) =>{
         const filter = new Filter();
         if(filter.isProfane(data)){
             return callback('Profane word detected');
         }
-        io.emit('message',data);
+        io.emit('message',generateMessage(data));
         callback();
     });
 
@@ -37,7 +38,7 @@ io.on('connection',(socket)=>{ //connection is the event.
     });
 
     socket.on('disconnect',()=>{ //disconnect is called within the .on connection
-        io.emit('message', 'A user left the convo');
+        io.emit('message', generateMessage('A user left the convo'));
     });
 });
 
