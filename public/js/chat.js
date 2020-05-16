@@ -5,15 +5,24 @@ const DOMElements = {
     messageForm : document.querySelector('#message-form'),
     messageFormInput : document.querySelector('#message-form input'),
     messageFormButton : document.querySelector('#message-form button'),
-    sendLocationButton : document.querySelector('#send-location')
+    sendLocationButton : document.querySelector('#send-location'),
+    messages: document.querySelector('#messages')
 };
+
+//Templates
+const messageTemplate = document.querySelector('#message-template').innerHTML;
 
 socket.on('message',(data)=>{
     console.log(data);
+    const html = Mustache.render(messageTemplate,{
+        message: data
+    });
+    messages.insertAdjacentHTML('beforeend', html);
 });
 
 socket.on('sendLocation', (data)=>{
     console.log(data);
+
 })
 
 DOMElements.messageForm.addEventListener('submit',(e)=>{
