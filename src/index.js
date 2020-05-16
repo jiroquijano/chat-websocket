@@ -25,6 +25,10 @@ io.on('connection',(socket)=>{ //connection is the event.
         io.emit('message',data);
     });
 
+    socket.on('sendLocation', (data)=>{
+        socket.broadcast.emit('message',data);
+    });
+
     socket.on('disconnect',()=>{ //disconnect is called within the .on connection
         io.emit('message', 'A user left the convo');
     });
