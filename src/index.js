@@ -26,7 +26,7 @@ io.on('connection',(socket)=>{ //connection is the event.
     });
 
     socket.on('sendLocation', (data)=>{
-        socket.broadcast.emit('message',data);
+        io.emit('sendLocation',`https://www.google.com/maps?q=${data.latitude},${data.longitude}`);
     });
 
     socket.on('disconnect',()=>{ //disconnect is called within the .on connection
