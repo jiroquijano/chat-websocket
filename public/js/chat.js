@@ -25,7 +25,8 @@ socket.on('message',(data)=>{
 socket.on('locationMessage', (data)=>{
     console.log(data);
     const html = Mustache.render(locationTemplate,{
-        location: data
+        location: data.url,
+        createdAt: moment(data.createdAt).format('h:mm:ss a')
     });
     DOMElements.messages.insertAdjacentHTML('beforeend',html);
 });

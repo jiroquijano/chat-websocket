@@ -3,6 +3,16 @@ const generateMessage = (message) =>{
         message,
         createdAt: new Date().getTime()
     }
-}
+};
 
-module.exports = {generateMessage};
+const generateLocationMessage = (message)=>{
+    return {
+        url: message,
+        createdAt: new Date().getTime()
+    }
+};
+
+module.exports = {
+    generateMessage,
+    generateLocationMessage
+};

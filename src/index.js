@@ -3,6 +3,7 @@ const http = require('http');
 const path = require('path');
 const socketio = require('socket.io');
 const Filter = require('bad-words');
+const {generateMessage, generateLocationMessage} = require('./utils/messages');
 
 const app = express();
 //instead of express creating the server in the background, we manually call
@@ -13,7 +14,6 @@ const io = socketio(server);
 
 const publicDirectory = path.join(__dirname,'../public');
 const PORT = process.env.PORT || 3000;
-const {generateMessage} = require('./utils/messages');
 
 app.use(express.static(publicDirectory));
 
@@ -33,7 +33,7 @@ io.on('connection',(socket)=>{ //connection is the event.
     });
 
     socket.on('sendLocation', (data,callback)=>{
-        io.emit('locationMessage',`https://www.google.com/maps?q=${data.latitude},${data.longitude}`);
+        io.emit('locationMessage',generateLocationMessage(`https://www.google.com/maps?q=${data.latitude},${data.longitude}`));
         callback();
     });
 
