@@ -31,10 +31,10 @@ io.on('connection',(socket)=>{ //connection is the event.
         socket.join(user.room);
 
         console.log('New WebSocket connection');
-        socket.emit('message',generateMessage('Welcome'));
+        socket.emit('message',generateMessage('Admin',`Welcome to the ${user.room} room!`));
         //broadcast.emit emits the message to all clients except for the current socket   
         //using the to() method further specifies which client group should the event be emitted to 
-        socket.broadcast.to(user.room).emit('message', generateMessage(`${user.username} has joined!`)); 
+        socket.broadcast.to(user.room).emit('message', generateMessage('Admin',`${user.username} has joined!`)); 
 
         callback();
     });
@@ -45,20 +45,20 @@ io.on('connection',(socket)=>{ //connection is the event.
         if(filter.isProfane(data)){
             return callback('Profane word detected');
         }
-        io.to(user.room).emit('message',generateMessage(data));
+        io.to(user.room).emit('message',generateMessage(user.username,data));
         callback();
     });
 
     socket.on('sendLocation', (data,callback)=>{
         const user = getUser(socket.id);
-        io.to(user.room).emit('locationMessage',generateLocationMessage(`https://www.google.com/maps?q=${data.latitude},${data.longitude}`));
+        io.to(user.room).emit('locationMessage',generateLocationMessage(user.username,`https://www.google.com/maps?q=${data.latitude},${data.longitude}`));
         callback();
     });
 
     socket.on('disconnect',()=>{ //disconnect is called within the .on connection
         const user = removeUser(socket.id);
         if(user){
-            io.to(user.room).emit('message', generateMessage(`${user.username} left the ${user.room} room`));
+            io.to(user.room).emit('message', generateMessage('Admin',`${user.username} left the ${user.room} room`));
         };
     });
 

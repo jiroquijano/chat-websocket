@@ -22,7 +22,7 @@ socket.on('message',(data)=>{
     const html = Mustache.render(messageTemplate,{
         message: data.message,
         createdAt: moment(data.createdAt).format('h:mm:ss a'),
-        user:username
+        user: data.user
     });
     DOMElements.messages.insertAdjacentHTML('beforeend', html);
 });
@@ -32,7 +32,7 @@ socket.on('locationMessage', (data)=>{
     const html = Mustache.render(locationTemplate,{
         location: data.url,
         createdAt: moment(data.createdAt).format('h:mm:ss a'),
-        user:username
+        user:data.user
     });
     DOMElements.messages.insertAdjacentHTML('beforeend',html);
 });
