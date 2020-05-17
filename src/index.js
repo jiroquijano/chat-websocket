@@ -35,7 +35,10 @@ io.on('connection',(socket)=>{ //connection is the event.
         //broadcast.emit emits the message to all clients except for the current socket   
         //using the to() method further specifies which client group should the event be emitted to 
         socket.broadcast.to(user.room).emit('message', generateMessage('Admin',`${user.username} has joined!`)); 
-
+        io.to(user.room).emit('roomData', {
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        });
         callback();
     });
 
@@ -59,6 +62,10 @@ io.on('connection',(socket)=>{ //connection is the event.
         const user = removeUser(socket.id);
         if(user){
             io.to(user.room).emit('message', generateMessage('Admin',`${user.username} left the ${user.room} room`));
+            io.to(user.room).emit('roomData', {
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            });
         };
     });
 

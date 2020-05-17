@@ -12,10 +12,19 @@ const DOMElements = {
 //Templates
 const messageTemplate = document.querySelector('#message-template').innerHTML;
 const locationTemplate = document.querySelector('#location-template').innerHTML;
+const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML;
 
 //Options
 //ignoreQueryPrefix option is for well, ignoring the prefix which is '?' in this case
 const {username, room} = Qs.parse(location.search,{ignoreQueryPrefix:true});
+
+socket.on('roomData', ({room,users})=>{
+    const html = Mustache.render(sidebarTemplate,{
+        room,
+        users
+    });
+    document.querySelector('#sidebar').innerHTML = html;
+});
 
 socket.on('message',(data)=>{
     console.log(data);
