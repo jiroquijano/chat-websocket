@@ -40,22 +40,23 @@ io.on('connection',(socket)=>{ //connection is the event.
     });
 
     socket.on('sendMessage',(data, callback) =>{
+        const user = getUser(socket.id);
         const filter = new Filter();
         if(filter.isProfane(data)){
             return callback('Profane word detected');
         }
-        io.emit('message',generateMessage(data));
+        io.to(user.room).emit('message',generateMessage(data));
         callback();
     });
 
     socket.on('sendLocation', (data,callback)=>{
-        io.emit('locationMessage',generateLocationMessage(`https://www.google.com/maps?q=${data.latitude},${data.longitude}`));
+        const user = getUser(socket.id);
+        io.to(user.room).emit('locationMessage',generateLocationMessage(`https://www.google.com/maps?q=${data.latitude},${data.longitude}`));
         callback();
     });
 
     socket.on('disconnect',()=>{ //disconnect is called within the .on connection
         const user = removeUser(socket.id);
-        console.log(user);
         if(user){
             io.to(user.room).emit('message', generateMessage(`${user.username} left the ${user.room} room`));
         };
