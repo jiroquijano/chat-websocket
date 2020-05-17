@@ -21,7 +21,8 @@ socket.on('message',(data)=>{
     console.log(data);
     const html = Mustache.render(messageTemplate,{
         message: data.message,
-        createdAt: moment(data.createdAt).format('h:mm:ss a')
+        createdAt: moment(data.createdAt).format('h:mm:ss a'),
+        user:username
     });
     DOMElements.messages.insertAdjacentHTML('beforeend', html);
 });
@@ -30,7 +31,8 @@ socket.on('locationMessage', (data)=>{
     console.log(data);
     const html = Mustache.render(locationTemplate,{
         location: data.url,
-        createdAt: moment(data.createdAt).format('h:mm:ss a')
+        createdAt: moment(data.createdAt).format('h:mm:ss a'),
+        user:username
     });
     DOMElements.messages.insertAdjacentHTML('beforeend',html);
 });
@@ -65,4 +67,9 @@ DOMElements.sendLocationButton.addEventListener('click',(e)=>{
     });
 });
 
-socket.emit('join', {username, room});
+socket.emit('join', {username, room}, (error)=>{
+    if(error){
+        alert(error);
+        location.href = '/'; //OMG REMEMBER DIS REDIRECTION TECHNIQUE
+    }
+});
