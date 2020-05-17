@@ -18,11 +18,18 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(publicDirectory));
 
 io.on('connection',(socket)=>{ //connection is the event.
-    console.log('New WebSocket connection');
-    socket.emit('message',generateMessage('Welcome'));
+    
+    socket.on('join', ({username, room})=>{
+        //socket join is used for grouping clients to a specific 'room'
+        socket.join(room);
 
-    //broadcast.emit emits the message to all clients except for the current socket    
-    socket.broadcast.emit('message', generateMessage('A new user has joined!')); 
+        console.log('New WebSocket connection');
+        socket.emit('message',generateMessage('Welcome'));
+        //broadcast.emit emits the message to all clients except for the current socket   
+        //using the to() method further specifies which client group should the event be emitted to 
+        socket.broadcast.to(room).emit('message', generateMessage(`${username} has joined!`)); 
+    });
+
     socket.on('sendMessage',(data, callback) =>{
         const filter = new Filter();
         if(filter.isProfane(data)){
@@ -40,6 +47,7 @@ io.on('connection',(socket)=>{ //connection is the event.
     socket.on('disconnect',()=>{ //disconnect is called within the .on connection
         io.emit('message', generateMessage('A user left the convo'));
     });
+
 });
 
 server.listen(PORT,()=>{

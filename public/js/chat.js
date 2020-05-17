@@ -13,6 +13,10 @@ const DOMElements = {
 const messageTemplate = document.querySelector('#message-template').innerHTML;
 const locationTemplate = document.querySelector('#location-template').innerHTML;
 
+//Options
+//ignoreQueryPrefix option is for well, ignoring the prefix which is '?' in this case
+const {username, room} = Qs.parse(location.search,{ignoreQueryPrefix:true});
+
 socket.on('message',(data)=>{
     console.log(data);
     const html = Mustache.render(messageTemplate,{
@@ -60,3 +64,5 @@ DOMElements.sendLocationButton.addEventListener('click',(e)=>{
         });
     });
 });
+
+socket.emit('join', {username, room});
